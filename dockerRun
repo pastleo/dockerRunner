@@ -1,0 +1,86 @@
+#!/bin/sh
+
+# =================
+# Author: PastLeo
+# Email: chgu82837@gmail.com
+# Date: 2014/12/27
+# =================
+
+dockerRunCmdPrefix="dockerRun:"
+
+dockerBin="$(which docker)"
+if ! [ $dockerBin ]; then
+    echo "This docker binary not found! Please install it to run this script!"
+    exit 255
+fi
+# echo "dockerBin = $dockerBin"
+
+if [[ $# -lt 1 ]]; then
+    echo ""
+    echo "dockerRun"
+    echo "=============================="
+    echo "A small docker client helper to run container with saved options in the Dockerfile"
+    echo "=============================="
+    echo "Usage:"
+    echo "    dockerRun <imageName_or_dockerPath> [command] [args...]"
+    echo ""
+    exit 255
+fi
+
+case "$1" in
+*/*)
+    # echo "use argment 1 as dockerPath"
+    imageName="$(basename $1)"
+    dockerPath="$1"
+    ;;
+*)
+    # echo "use argment 1 as imageName"
+    if ! [ $DOCKER_RUN_FOLDER ]; then
+        DOCKER_RUN_FOLDER="$HOME/.dockerRepo"
+    fi
+    # echo $DOCKER_RUN_FOLDER
+
+    imageName="$1"
+    dockerPath="$DOCKER_RUN_FOLDER/$1"
+    ;;
+esac
+
+# echo "imageName = $imageName"
+# echo "dockerPath = $dockerPath"
+
+if ! [ -f "$dockerPath/Dockerfile" ]; then
+    echo ""
+    echo "Error:"
+    echo "$dockerPath does not contains a Dockerfile or not exist!"
+    echo ""
+
+    exit 255
+fi
+
+# echo "grep -E -m 1 \" *# *$dockerRunCmdPrefix.+\s\" $dockerPath/Dockerfile | sed -E \"s/ *# *$dockerRunCmdPrefix(.+)\s/\1/g\""
+runOpt=$(grep -E -m 1 " *# *$dockerRunCmdPrefix.+\s" $dockerPath/Dockerfile | sed -E "s/ *# *$dockerRunCmdPrefix(.+)\s/\1/g")
+# echo "runOpt = $runOpt"
+
+if ! [ "$runOpt" ]; then
+    echo ""
+    echo "Error:"
+    echo "The Dockerfile must contain a line with '# $dockerRunCmdPrefix [options]'!"
+    echo ""
+    exit 255
+fi
+
+$dockerBin images $imageName | grep $imageName &> /dev/null
+if [[ $? -ne 0 ]]; then
+    echo "docker image $imageName not exist, building..."
+
+    # echo "$dockerBin build -t $imageName $dockerPath"
+    $dockerBin build -t $imageName $dockerPath
+fi
+
+runOpt=$(eval "echo $runOpt")
+# echo "runOpt = $runOpt"
+
+shift
+
+# echo "$dockerBin run $runOpt $imageName $@"
+$dockerBin run $runOpt $imageName $@
