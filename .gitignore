@@ -1,2 +1,3 @@
 /dockerRepo/*
 !/dockerRepo/debian-bash*
+!/dockerRepo/lnmp56*

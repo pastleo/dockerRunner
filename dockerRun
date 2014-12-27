@@ -57,8 +57,8 @@ if ! [ -f "$dockerPath/Dockerfile" ]; then
     exit 255
 fi
 
-# echo "grep -E -m 1 \" *# *$dockerRunCmdPrefix.+\s\" $dockerPath/Dockerfile | sed -E \"s/ *# *$dockerRunCmdPrefix(.+)\s/\1/g\""
-runOpt=$(grep -E -m 1 " *# *$dockerRunCmdPrefix.+\s" $dockerPath/Dockerfile | sed -E "s/ *# *$dockerRunCmdPrefix(.+)\s/\1/g")
+# echo "grep -E -m 1 \"^ *# *$dockerRunCmdPrefix\" $dockerPath/Dockerfile | sed -E \"s/^ *# *$dockerRunCmdPrefix +//g\" | sed -E \"s/[^ -~]+/ /g\""
+runOpt=$(grep -E -m 1 "^ *# *$dockerRunCmdPrefix" $dockerPath/Dockerfile | sed -E "s/^ *# *$dockerRunCmdPrefix +//g" | sed -E "s/[^ -~]+/ /g")
 # echo "runOpt = $runOpt"
 
 if ! [ "$runOpt" ]; then
@@ -69,12 +69,20 @@ if ! [ "$runOpt" ]; then
     exit 255
 fi
 
+# echo "$dockerBin images $imageName | grep $imageName &> /dev/null"
 $dockerBin images $imageName | grep $imageName &> /dev/null
 if [[ $? -ne 0 ]]; then
     echo "docker image $imageName not exist, building..."
 
     # echo "$dockerBin build -t $imageName $dockerPath"
     $dockerBin build -t $imageName $dockerPath
+
+    if [[ $? -ne 0 ]]; then
+        echo ""
+        echo "It seems build failed, aborting..."
+        echo ""
+        exit 255
+    fi
 fi
 
 runOpt=$(eval "echo $runOpt")
@@ -82,5 +90,6 @@ runOpt=$(eval "echo $runOpt")
 
 shift
 
-# echo "$dockerBin run $runOpt $imageName $@"
+echo "Starting to run docker..."
+echo ">> $dockerBin run $runOpt $imageName $@"
 $dockerBin run $runOpt $imageName $@
