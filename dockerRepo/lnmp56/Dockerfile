@@ -4,11 +4,14 @@ FROM debian
 RUN apt-get update && apt-get install -y wget less
 
 RUN \
-wget http://www.dotdeb.org/dotdeb.gpg -O- | apt-key add -
+wget http://www.dotdeb.org/dotdeb.gpg -O- | apt-key add - && \
+wget http://nginx.org/keys/nginx_signing.key -O- | apt-key add -
 
 RUN \
 echo "deb http://packages.dotdeb.org wheezy-php56 all" >> /etc/apt/sources.list && \
 echo "deb-src http://packages.dotdeb.org wheezy-php56 all" >> /etc/apt/sources.list && \
+echo "deb http://nginx.org/packages/debian/ wheezy nginx" >> /etc/apt/sources.list && \
+echo "deb-src http://nginx.org/packages/debian/ wheezy nginx" >> /etc/apt/sources.list && \
 apt-get update
 
 RUN apt-get -y install mysql-server \
