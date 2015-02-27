@@ -1,3 +1,9 @@
-/dockerRepo/*
-!/dockerRepo/debian-bash*
-!/dockerRepo/lnmp56*
+/*
+!/.gitignore
+!/dockeR
+!/LICENSE
+!/README.md
+!/Dockerfile
+
+!/nginx-php56*
+!/debian-bash*
