@@ -7,3 +7,4 @@
 
 !/nginx-php56*
 !/debian-bash*
+!/laravel-dev*
