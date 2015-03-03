@@ -111,7 +111,7 @@ case "$1" in
     imageName="$1"
     dockerPath="$dockerRunHome/$1"
     if [ -f $dockerPath ]; then
-        dockerPath=$(cd $dockerPath/$(grep -E -m 1 "^ *$dockerRunLinkPrefix" $dockerPath | sed -E "s/^ *#? *$dockerRunLinkPrefix +//g" | sed -E "s/ +//g") && pwd)
+        dockerPath=$(cd $dockerRunHome/$(grep -E -m 1 "^ *$dockerRunLinkPrefix" $dockerPath | sed -E "s/^ *#? *$dockerRunLinkPrefix +//g" | sed -E "s/ +//g") && pwd)
     fi
     ;;
 esac
