@@ -57,12 +57,12 @@ case "$1" in
 
     if [ $2 ]; then
         echo "echo '' >> $dockerAshrc" >> $boot2dockerBootscript
-        echo "echo \"dockeR $2\" >> $dockerAshrc" >> $boot2dockerBootscript
+        echo "echo \"$binName $2\" >> $dockerAshrc" >> $boot2dockerBootscript
         echo "echo '' >> $dockerAshrc" >> $boot2dockerBootscript
         echo "" >> $boot2dockerBootscript
 
         echo "" >> $dockerAshrc
-        echo "dockeR $2" >> $dockerAshrc
+        echo "$binName $2" >> $dockerAshrc
         echo "" >> $dockerAshrc
     fi
 
@@ -88,7 +88,7 @@ if [ $# -lt 1 ]; then
     echo "Usage:"
     echo "    $binName [-rebuild] <imageName_or_dockerPath> [command] [args...]"
     echo "    $binName --install [install-destination-dir] # install to normal unix system"
-    echo "    $binName --install-b2d [default-dockeR-imageName] # install to boot2docker system"
+    echo "    $binName --install-b2d [default-dockeRun-imageName] # install to boot2docker system"
     echo ""
     exit 255
 fi
