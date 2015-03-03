@@ -6,7 +6,7 @@
 # Date: 2014/12/27
 # =================
 
-binName="dockeR"
+binName="dockeRun"
 dockerRunCmdPrefix="dockerRun:"
 dockerRunLinkPrefix="dockerRunLink:"
 dockerRunBin=$(readlink $0 || echo $(cd $(dirname $0) && pwd)/$(basename $0))
@@ -68,6 +68,8 @@ case "$1" in
 
     echo "chmoding $boot2dockerBootscript ..."
     chmod ugo+x $boot2dockerBootscript
+    echo "boot2dockerBootscript OK!"
+    $0 "--install"
     exit 0
     ;;
 "--rebuild")
@@ -79,7 +81,7 @@ esac
 
 if [ $# -lt 1 ]; then
     echo ""
-    echo "$binName - dockerRun exec by $0"
+    echo "$binName - dockerRunner exec by $0"
     echo "=============================="
     echo "A small docker client helper to run container with saved options in the Dockerfile"
     echo "=============================="

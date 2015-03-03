@@ -20,10 +20,10 @@ So I write a small script that include the options for the container to run, tur
 
 ```
 # run a bash on debian
-dockeR debian-bash
+dockeRun debian-bash
 
 # run a nginx with php56
-dockeR nginx-php56
+dockeRun nginx-php56
 ```
 
 ## How ...
@@ -33,15 +33,15 @@ dockeR nginx-php56
  * Git clone this repo: `git clone git@github.com:chgu82837/dockerRunner.git`
  * If you are installing on
     * a native unix system (linux, OSX ...):
-        * `sh <repo_you_just_cloned>/dockeR --install`
-        * It link the executable to your `/usr/local/bin` / `/usr/bin` / `/bin`, or you can specify by `sh <repo_you_just_cloned>/dockeR --install [install-destination-dir]`
+        * `sh <repo_you_just_cloned>/dockeRun --install`
+        * It link the executable to your `/usr/local/bin` / `/usr/bin` / `/bin`, or you can specify by `sh <repo_you_just_cloned>/dockeRun --install [install-destination-dir]`
     * a boot2docker system:
-        * `sudo sh <repo_you_just_cloned>/dockeR --install-b2d [default-dockeR-imageName]`
-        * If you specify the `default-dockeR-imageName` option, your boot2docker system will auto run the image once you log in, I have the `debian-bash` image built-in, so `sh <repo_you_just_cloned>/dockeR debian-bash` to auto run the bash env with `docker` and `dockeR`
+        * `sudo sh <repo_you_just_cloned>/dockeRun --install-b2d [default-dockeRun-imageName]`
+        * If you specify the `default-dockeRun-imageName` option, your boot2docker system will auto run the image once you log in, I have the `debian-bash` image built-in, so `sh <repo_you_just_cloned>/dockeRun debian-bash` to auto run the bash env with `docker` and `dockeRun`
 
 ### To use ?
 
- * `dockeR <imageName_or_dockerPath> [command] [args...]`
+ * `dockeRun <imageName_or_dockerPath> [command] [args...]`
     * `imageName` means
         * a folder contains Dockerfile inside the this repo (like `nginx-php56`), it will use the Dockerfile inside the folder to build the image and run
         * a text file inside the this repo (like `debian-bash`, it will use the Dockerfile inside the location specified by string after `dockerRunLink:` in the file content to build the image and run
@@ -53,13 +53,13 @@ dockeR nginx-php56
 ### It works ?
 
 Ehh, this script just use sed to dig the `<option>` specified out and help you do the docker run command
-Check out the `dockeR` executable script on your own XDD
+Check out the `dockeRun` executable script on your own XDD
 
 ## About built-in image
 
 ### debian-bash
 
-This image will run a debian bash env with docker from boot2docker system and the dockeR executable and mount your current location `pwd` to `/workspace` and cd into it
+This image will run a debian bash env with docker from boot2docker system and the dockeRun executable and mount your current location `pwd` to `/workspace` and cd into it
 
 ### nginx-php56
 
