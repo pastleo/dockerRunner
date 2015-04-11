@@ -16,6 +16,14 @@ dockerRunHome=$(dirname $dockerRunBin)
 # echo "dockerRunHome = $dockerRunHome"
 # exit 0
 
+get_dockeRun_path() {
+    dockerPath="$dockerRunHome/$1"
+    if [ -f $dockerPath ]; then
+        dockerPath=$(cd $dockerRunHome/$(grep -E -m 1 "^ *$dockerRunLinkPrefix" $dockerPath | sed -E "s/^ *#? *$dockerRunLinkPrefix +//g" | sed -E "s/ +//g") && pwd)
+    fi
+    echo $dockerPath
+}
+
 case "$1" in
 "--install")
     if [ $2 ]; then
@@ -72,8 +80,25 @@ case "$1" in
     $0 "--install"
     exit 0
     ;;
+"--template")
+    if [ $2 ]; then
+        dockerPath="$(get_dockeRun_path $2)"
+        if [ $3 ]; then
+            targetPath=$3
+        else
+            targetPath="./"
+        fi
+        # echo "cp -Rv $dockerPath/* $targetPath"
+        cp -Rv $dockerPath/* $targetPath
+        echo "Done. The template is placed to $targetPath"
+        echo ""
+        echo "Use \"$binName $targetPath\" to start working env for your project"
+        exit 0
+    fi
+    shift
+    ;;
 "--rebuild")
-    echo " === rebuilding mode === "
+    echo "[rebuilding mode]"
     rebuild_mod=1
     shift
     ;;
@@ -87,6 +112,7 @@ if [ $# -lt 1 ]; then
     echo "=============================="
     echo "Usage:"
     echo "    $binName [-rebuild] <imageName_or_dockerPath> [command] [args...]"
+    echo "    $binName --template <imageName> [dockerPath]"
     echo "    $binName --install [install-destination-dir] # install to normal unix system"
     echo "    $binName --install-b2d [default-dockeRun-imageName] # install to boot2docker system"
     echo ""
@@ -103,16 +129,13 @@ fi
 case "$1" in
 */*)
     # echo "use argment 1 as dockerPath"
-    imageName="$(basename $1)"
+    imageName=$(basename $(cd ./ && pwd))
     dockerPath="$1"
     ;;
 *)
-    # echo "use argment 1 as imageName"
+    echo "use argment 1 as imageName"
     imageName="$1"
-    dockerPath="$dockerRunHome/$1"
-    if [ -f $dockerPath ]; then
-        dockerPath=$(cd $dockerRunHome/$(grep -E -m 1 "^ *$dockerRunLinkPrefix" $dockerPath | sed -E "s/^ *#? *$dockerRunLinkPrefix +//g" | sed -E "s/ +//g") && pwd)
-    fi
+    dockerPath="$(get_dockeRun_path $1)"
     ;;
 esac
 

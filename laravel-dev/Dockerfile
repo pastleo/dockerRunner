@@ -13,7 +13,7 @@ echo "deb-src http://packages.dotdeb.org wheezy-php56 all" >> /etc/apt/sources.l
 apt-get update
 
 RUN apt-get -y install \
-php5-cli php5-pgsql php5-common php5-mysql php5-imagick php5-imap php5-mcrypt php5-pgsql php5-sqlite php5-gd
+php5-cli php5-common php5-imap php5-gd php5-curl php5-fpm php5-imagick php5-mcrypt php5-pgsql php5-mysql php5-sqlite php5-gd
 
 RUN apt-get clean
 

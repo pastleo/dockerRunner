@@ -16,7 +16,7 @@ echo "deb-src http://nginx.org/packages/debian/ wheezy nginx" >> /etc/apt/source
 apt-get update
 
 RUN apt-get -y install \
-php5-fpm php5-mysql php5-imagick php5-imap php5-mcrypt php5-pgsql php5-sqlite php5-gd \
+php5-cli php5-common php5-imap php5-gd php5-curl php5-fpm php5-imagick php5-mcrypt php5-pgsql php5-mysql php5-sqlite php5-gd \
 nginx
 
 RUN apt-get clean
