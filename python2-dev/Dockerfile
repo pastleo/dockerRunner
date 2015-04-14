@@ -1,6 +1,6 @@
 # dockerRun: -it -v $(cd /c/Users/ 2> /dev/null || cd /Users/ 2> /dev/null; pwd)":"$(cd /c/Users/ 2> /dev/null || cd /Users/ 2> /dev/null; pwd) -v $(pwd):/workspace
 
-FROM python:3-wheezy
+FROM python:2-wheezy
 
 RUN apt-get update && apt-get install -y \
   git \
@@ -8,12 +8,12 @@ RUN apt-get update && apt-get install -y \
   unzip \
   vim \
   man
-
 RUN apt-get clean
 
-ADD pip_require.sh /
+ADD requirements.txt /
+RUN pip install -r /requirements.txt
 
 RUN mkdir /workspace
 WORKDIR /workspace
 
-CMD ["/bin/bash"]
+CMD /bin/bash
