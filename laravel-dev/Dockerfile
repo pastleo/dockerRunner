@@ -1,4 +1,4 @@
-# dockerRun: -v $(pwd):/laravel -p 80:80 -it
+# dockerRun: -v $(pwd):/workspace -p 80:80 -it
 FROM debian
 # FROM debian-bash
 
@@ -20,9 +20,9 @@ RUN apt-get clean
 RUN php -r "readfile('http://getcomposer.org/installer');" | \
 php -- --install-dir=/usr/local/bin/ --filename=composer
 
-RUN mkdir /laravel
+RUN mkdir /workspace
 
-WORKDIR /laravel
+WORKDIR /workspace
 ADD artisan-serve.sh /
 
 CMD ["/bin/bash","/artisan-serve.sh"]
