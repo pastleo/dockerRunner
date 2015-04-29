@@ -4,20 +4,23 @@ FROM debian:jessie
 
 RUN apt-get update
 RUN apt-get install -y \
-  docker.io \
   git \
   wget \
   unzip \
   vim \
-  docker \
-  man
+  man \
+  curl
 RUN apt-get clean
 
-RUN mkdir /dockeR
-ADD ./ /dockeR/
-RUN /bin/sh /dockeR/dockeR --install
+RUN curl -sSL https://get.docker.com/ | sh
 
-RUN mkdir /workspace
+RUN mkdir -p /dockeRun
+
+ADD . /dockeRun
+
+RUN sh /dockeRun/dockeRun --install
+
+RUN mkdir -p /workspace
 WORKDIR /workspace
 
 CMD /bin/bash
