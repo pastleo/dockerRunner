@@ -1,5 +1,5 @@
 # dockerRun: -v $(pwd):/workspace -p 80:80 -it
-FROM debian
+FROM debian:wheezy
 # FROM debian-bash
 
 RUN apt-get update && apt-get install -y wget less
