@@ -43,7 +43,8 @@ case "$1" in
     fi
 
     echo "installing $binName for the system ..."
-    if [ -f $installDir/$binName ]; then
+    echo "$installDir/$binName"
+    if [ -h "$installDir/$binName" -o -h "$installDir/$binName" ]; then
         echo "$installDir/$binName exists, removing ..."
         rm -f $installDir/$binName
     fi
@@ -89,7 +90,7 @@ case "$1" in
             targetPath="./"
         fi
         # echo "cp -Rv $dockerPath/* $targetPath"
-        cp -Rv $dockerPath/* $targetPath
+        cp -Rvn $dockerPath/* $targetPath
         echo "Done. The template is placed to $targetPath"
         echo ""
         echo "Use \"$binName $targetPath\" to start working env for your project"
