@@ -25,6 +25,13 @@ get_dockeRun_path() {
 }
 
 case "$1" in
+"--list"|"-l")
+    cd $dockerRunHome
+    echo "Listing possible dockeRun settings ..."
+    echo "============================================"
+    ls | grep -v -E "Dockerfile|Icon|.+.md|LICENSE|$binName"
+    exit 0
+    ;;
 "--install")
     if [ $2 ]; then
         installDir="$2"
@@ -81,7 +88,7 @@ case "$1" in
     $0 "--install"
     exit 0
     ;;
-"--template")
+"--template"|"-t")
     if [ $2 ]; then
         dockerPath="$(get_dockeRun_path $2)"
         if [ $3 ]; then
@@ -90,7 +97,7 @@ case "$1" in
             targetPath="./"
         fi
         # echo "cp -Rv $dockerPath/* $targetPath"
-        cp -Rvn $dockerPath/* $targetPath
+        cp -Rvi $dockerPath/* $targetPath
         echo "Done. The template is placed to $targetPath"
         echo ""
         echo "Use \"$binName $targetPath\" to start working env for your project"
@@ -98,7 +105,7 @@ case "$1" in
     fi
     shift
     ;;
-"--rebuild")
+"--rebuild"|"-r")
     echo "[rebuilding mode]"
     rebuild_mod=1
     shift
@@ -112,8 +119,9 @@ if [ $# -lt 1 ]; then
     echo "A small docker client helper to run container with saved options in the Dockerfile"
     echo "=============================="
     echo "Usage:"
-    echo "    $binName [-rebuild] <imageName_or_dockerPath> [command] [args...]"
-    echo "    $binName --template <imageName> [dockerPath]"
+    echo "    $binName --list|-l"
+    echo "    $binName [--rebuild|-r] <imageName_or_projectPath> [command] [args...] # build and run the container"
+    echo "    $binName --template|-t <imageName> [projectPath] # place the Dockerfile template to the projectPath"
     echo "    $binName --install [install-destination-dir] # install to normal unix system"
     echo "    $binName --install-b2d [default-dockeRun-imageName] # install to boot2docker system"
     echo ""
