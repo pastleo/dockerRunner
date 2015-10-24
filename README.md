@@ -26,11 +26,18 @@ dockeRun debian-bash
 dockeRun nginx-php56
 ```
 
+### This script allows you ...
+
+ 1. Run a container with params saved in the `Dockerfile` of the line begin with `# dockerRun: `
+ 2. Run a container at anywhere without creating a `Dockerfile`, just call the container name
+    1. Then the folder mounting (usually the dev folder) can be preset inside the `Dockerfile`, yeah!
+ 3. Place a `Dockerfile` template so you can start a project more easizer
+
 ## How ...
 
 ### To install?
 
- * Git clone this repo: `git clone git@github.com:chgu82837/dockerRunner.git`
+ * Git clone this repo: `git clone git@github.com:chgu82837/dockerRunner.git`, and place the folder to a place you want to keep (the installation only links `dockeRun` execuatble to your path)
  * If you are installing on
     * a native unix system (linux, OSX ...):
         * `sh <repo_you_just_cloned>/dockeRun --install`
@@ -41,26 +48,60 @@ dockeRun nginx-php56
 
 ### To use ?
 
- * `dockeRun <imageName_or_dockerPath> [command] [args...]`
+```
+dockeRun - dockerRunner exec by /usr/local/bin/dockeRun
+===============================================
+A small docker client helper to run container with saved options in the Dockerfile
+Usage:
+    dockeRun [--rebuild|-r] <imageName_or_projectPath> [command] [args...] # build and run the container
+    dockeRun --template|-t [templateName] [projectPath] # place the Dockerfile template to the projectPath, or list templates
+    dockeRun --list|-l # list availible configs
+    dockeRun --help|-h # show this help message
+    dockeRun --install [install-destination-dir] # install to normal unix system
+    dockeRun --install-b2d [default-dockeRun-imageName] # install to boot2docker system
+```
+
+#### Run a dockeRun config
+
+ 1. To get availible configs, run `dockeRun -l`
+ 2. Select the config you need from listed config, see *About built-in dockeRun configs* below for more info
+ 3. `dockeRun <imageName_or_dockerPath> [command] [args...]`
     * `imageName` means
         * a folder contains Dockerfile inside the this repo (like `nginx-php56`), it will use the Dockerfile inside the folder to build the image and run
         * a text file inside the this repo (like `debian-bash`, it will use the Dockerfile inside the location specified by string after `dockerRunLink:` in the file content to build the image and run
-    * `dockerPath` means the path just like the path you are using `docker build <path>`, this will use the containing folder as its image name
- * To specify the option when runing an image,
-    * add a line like `# dockerRun: <option>` to the Dockerfile
-    * The `<option>` is the same as `[OPTIONS]` of `docker run [OPTIONS] IMAGE [COMMAND] [ARG...]`, e.g. `# dockerRun: -v $(pwd):/var/www/html -p 80:80`. You can check out my Dockerfile folders inside dockerRepo folder of this repo
 
-### It works ?
+#### Use dockeRun template
 
-Ehh, this script just use sed to dig the `<option>` specified out and help you do the docker run command
-Check out the `dockeRun` executable script on your own XDD
+ 1. Run `dockeRun -t` to see availible templates
+ 2. Select the template you need from listed template, see *About built-in dockeRun template* below for more info
+ 3. Run `dockeRun -t <templateName> [projectPath]` to place the template `Dockerfile` into the `projectPath` or your current location if not specified
+ 4. `dockeRun <imageName_or_dockerPath> [command] [args...]`
+    * `dockerPath` means the path where `Dockerfile` is located (usually `./`), just like the path you are using `docker build <path>`, this will use the containing folder as its image name
 
-## About built-in image
+#### To specify the option when runing an image
 
-### debian-bash
+ * Add a line like `# dockerRun: <option>` to the Dockerfile
+ * The `<option>` is the same as `[OPTIONS]` of `docker run [OPTIONS] IMAGE [COMMAND] [ARG...]`, e.g. `# dockerRun: -v $(pwd):/var/www/html -p 80:80`. You can check out my Dockerfile folders inside dockerRepo folder of this repo
 
-This image will run a debian bash env with docker from boot2docker system and the dockeRun executable and mount your current location `pwd` to `/workspace` and cd into it
+## About built-in images
 
-### nginx-php56
+### DockeRun configs
 
-This image will run a nginx with php 5.6 and use your current location `pwd` to the html doc root on `/htdoc`
+ * cplusplus-dev: [c++](http://en.cppreference.com/) development, providing shell with `g++` to compile and execute
+ * debian-bash: just a bash environment in debian
+ * golang: [go-language](https://golang.org/) development, providing shell to compile and execute
+ * laravel-dev: [laravel](http://laravel.com/) development, providing shell to compile and execute
+ * nginx-php56: A nginx with php56 and use your current location `pwd` to the html doc root on `/htdoc`
+ * node: [nodejs](https://nodejs.org/) development, providing shell with `node` to run
+ * python2: [python2](https://www.python.org/) development, providing shell with `python` to run
+ * python3: [python3](https://www.python.org/) development, providing shell with `python` to run
+ * ruby_or_rails: [ruby](https://www.ruby-lang.org/) or [rails](http://rubyonrails.org/) development, providing shell with `ruby` / `irb` / `rails` to run, `s` to `rails s -b 0.0.0.0` and `l` to `less +F /var/log/rs.log`
+ * slideshow-pastpress: a shell with [slideshow](http://slideshow-s9.github.io/index.html) which I use to create my slides with my own theme [pastpress](https://github.com/chgu82837/PastPress)
+
+### DockeRun template
+
+ * golang: [go-language](https://golang.org/) development with `Godeps` (used by [gpm](https://github.com/pote/gpm)) to customize packages you need, providing shell to compile and execute
+ * node: [nodejs](https://nodejs.org/) development with `package.json` (used by [npm](https://www.npmjs.com)) to customize packages you need, providing shell to run
+ * python2: [python](https://www.python.org/) development with `requirements.txt` (used by [pip](http://pip.readthedocs.org)) to customize packages you need, providing shell to run
+ * python3: [python](https://www.python.org/) development with `requirements.txt` (used by [pip](http://pip.readthedocs.org)) to customize packages you need, providing shell to run
+ * ruby_or_rails: [ruby](https://www.ruby-lang.org/) or [rails](http://rubyonrails.org/) development with `Gemfile` (used by [gem](https://rubygems.org)) to customize packages you need, providing shell with `ruby` / `irb` / `rails` to run, `s` to `rails s -b 0.0.0.0` and `l` to `less +F /var/log/rs.log`

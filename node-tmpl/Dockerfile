@@ -4,7 +4,7 @@ FROM node:latest
 
 WORKDIR /
 ADD package.json /
-RUN npm install; mkdir -p /workspace;
+RUN npm install -g; mkdir -p /workspace;
 
 WORKDIR /workspace
 

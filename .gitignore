@@ -6,7 +6,10 @@
 !/Dockerfile
 
 !/cplusplus-dev*
+!/golang*
+!/golang-tmpl*
 !/laravel-dev*
+!/nginx-grunt*
 !/nginx-php56*
 !/node*
 !/node-tmpl*

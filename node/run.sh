@@ -1,9 +1,9 @@
 #/bin/sh
 
 pkgFile="package.json"
-tmpl="node-tmpl"
-installAct="npm install"
-manInstall="npm install ..."
+tmpl="node"
+installAct="npm install -g"
+manInstall="npm install -g  ..."
 
 echo "==============================="
 

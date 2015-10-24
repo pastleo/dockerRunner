@@ -1,9 +1,9 @@
 #/bin/sh
 
-pkgFile="Gemfile"
-tmpl="ruby_or_rails"
-installAct="bundle"
-manInstall="gem install ..."
+pkgFile="Godeps"
+tmpl="golang"
+installAct="gpm install"
+manInstall="go get ..."
 
 echo "==============================="
 
@@ -23,8 +23,7 @@ else
 	echo "    dockeRun --template $tmpl"
 fi
 echo ""
-echo "=== Rails Environment ======================================="
-echo "Use 'rails new ./' to init the rails project in this folder"
-echo "Or use 's' to toggle development server, use 'l' to view server log."
+
+ln -s /workspace /go/src/$PROJECT_NAME
 
 /bin/bash

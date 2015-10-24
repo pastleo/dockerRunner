@@ -1,7 +1,7 @@
 #/bin/sh
 
 pkgFile="requirements.txt"
-tmpl="python2-tmpl"
+tmpl="python2"
 installAct="pip install -r $pkgFile"
 manInstall="pip install ..."
 

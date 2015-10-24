@@ -1,0 +1,27 @@
+# About this Godeps file
+# ==========================================
+# See https://github.com/pote/gpm#the-godeps-file for more info
+#
+# Dep examples:
+# github.com/nu7hatch/gotrail               v0.0.2
+# github.com/replicon/fast-archiver         v1.02
+# launchpad.net/gocheck                     r2013.03.03   # Bazaar repositories are supported
+# code.google.com/p/go.example/hello/...    ae081cd1d6cc  # And so are Mercurial ones
+
+# Revel development
+# ==========================================
+# If you are going for a [revel](https://revel.github.io) project, uncomment the following two lines to fetch the dependency
+# github.com/revel/revel
+# github.com/revel/cmd/revel
+#
+# Before container started, you need to expose 9000 port as 80 by change `Dockerfile`'s `# dockerRun:` line to this:
+# # dockerRun: -v $(pwd):/workspace -it -e "PROJECT_NAME="$(basename $(pwd)) -p 80:9000
+#
+# After the container started,
+# 0. move the linked project away by `mv /go/src/<project_name> /go/src/<project_name>-bak`
+# 1. Use `revel new <poject_name>` to create project at `/go/src/<project_name>`
+# 2. Move created things to /workspace by `mv /go/src/<project_name>/* /workspace/`
+# 3. Move the backup back by `rmdir /go/src/<project_name>; mv /go/src/<project_name>-bak /go/src/<project_name>`
+# 4. Run project like this:
+#    * `revel run <project_name>` to run the project
+#    * `revel build <project_name> ...` to compile the project to a location
