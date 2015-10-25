@@ -88,7 +88,9 @@ case "$1" in
         # echo "cp -Rvi $dockerPath/* $targetPath"
         # exit
 
-        cp -Rvi $dockerPath/* $targetPath
+        for f in $(cd $dockerPath && ls); do
+            cp -Rvi $dockerPath/$f $targetPath
+        done
         echo "Done. The template is placed to $targetPath"
         echo ""
         echo "Use \"$binName $targetPath\" to start working env for your project"
@@ -131,6 +133,17 @@ case "$1" in
     echo "linking the executable into $installDir ..."
     ln -s $dockerRunBin $installDir/$binName
     chmod ugo+x $dockerRunBin
+
+    cd $dockerRunHome
+    echo "updating submodule ..."
+    echo "Do you want to updating submodule?"
+    echo ' Your choise: [y/n] ' ; read ans
+    case "$ans" in
+    y*|Y*)
+        git submodule update --init --recursive
+        git submodule foreach --recursive git pull origin master
+    ;;
+    esac
     exit 0
     ;;
 "--install-b2d")
