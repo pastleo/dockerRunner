@@ -2,8 +2,14 @@
 
 pkgFile="package.json"
 tmpl="node"
-installAct="npm install -g"
-manInstall="npm install -g  ..."
+installAct="npm install"
+manInstall="npm install -g ... "
+
+for f in $(ls /workspace/); do
+    if ! [ -e $f ]; then
+        ln -s /workspace/$f /root/workspace/$f;
+    fi;
+done;
 
 echo "==============================="
 

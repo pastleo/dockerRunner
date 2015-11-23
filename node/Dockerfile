@@ -3,8 +3,13 @@
 FROM node:latest
 
 ADD run.sh /
-RUN mkdir -p /workspace; chmod u+x /run.sh
-WORKDIR /workspace
+
+RUN \
+mkdir -p /root/workspace/node_modules; \
+mkdir -p /workspace; \
+chmod +x /run.sh;
+
+WORKDIR /root/workspace
 
 CMD /run.sh
 # CMD /bin/bash
